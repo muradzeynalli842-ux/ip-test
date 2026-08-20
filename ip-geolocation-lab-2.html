@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="az">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IP Geolocation Lab</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:720px;margin:40px auto;padding:0 18px;line-height:1.5}
+    .card{border:1px solid #ddd;border-radius:14px;padding:18px;margin-top:18px}
+    code{word-break:break-all}
+    .muted{opacity:.7}
+  </style>
+</head>
+<body>
+  <h1>IP Geolocation Lab</h1>
+  <p>Bu səhifə laboratoriya üçündür. GPS icazəsi istəmir; yalnız internet bağlantısından görünən public IP əsasında təxmini yer məlumatını göstərir.</p>
+
+  <div class="card">
+    <div><b>IP:</b> <span id="ip">Yüklənir...</span></div>
+    <div><b>Ölkə:</b> <span id="country">—</span></div>
+    <div><b>Şəhər:</b> <span id="city">—</span></div>
+    <div><b>Region:</b> <span id="region">—</span></div>
+    <div><b>Provayder:</b> <span id="isp">—</span></div>
+    <div><b>Təxmini koordinat:</b> <span id="coords">—</span></div>
+  </div>
+
+  <p class="muted">Qeyd: IP geolokasiya dəqiq GPS ünvanı deyil. Mobil operator, VPN, Wi‑Fi və provayder səbəbilə nəticə başqa şəhər/region göstərə bilər.</p>
+
+<script>
+(async () => {
+  try {
+    const r = await fetch("https://ipwho.is/");
+    const d = await r.json();
+    if (!d.success) throw new Error(d.message || "Sorğu alınmadı");
+    document.getElementById("ip").textContent = d.ip ?? "—";
+    document.getElementById("country").textContent = d.country ?? "—";
+    document.getElementById("city").textContent = d.city ?? "—";
+    document.getElementById("region").textContent = d.region ?? "—";
+    document.getElementById("isp").textContent = d.connection?.isp ?? "—";
+    document.getElementById("coords").textContent =
+      (d.latitude != null && d.longitude != null) ? `${d.latitude}, ${d.longitude}` : "—";
+  } catch (e) {
+    document.getElementById("ip").textContent = "Xəta: " + e.message;
+  }
+})();
+</script>
+</body>
+</html>
