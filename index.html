@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IP Test</title>
+</head>
+<body>
+<h2>IP Geolocation Test</h2>
+<p id="result">Yüklənir...</p>
+
+<script>
+fetch("https://ipwho.is/")
+.then(r => r.json())
+.then(d => {
+ document.getElementById("result").innerHTML =
+ "IP: " + d.ip + "<br>" +
+ "Ölkə: " + d.country + "<br>" +
+ "Şəhər: " + d.city + "<br>" +
+ "Region: " + d.region + "<br>" +
+ "Provayder: " + d.connection.isp;
+})
+.catch(() => {
+ document.getElementById("result").innerText = "Məlumat alınmadı";
+});
+</script>
+</body>
+</html>
